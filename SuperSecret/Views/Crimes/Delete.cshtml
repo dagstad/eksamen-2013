@@ -1,0 +1,48 @@
+﻿@model SuperSecret.Models.Crime
+
+@{
+    ViewBag.Title = "Slett lovbrudd";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<h3>Er du sikker på at du vil slette dette lovbruddet?</h3>
+<div>
+   
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TypeOfCrime.CrimeTypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TypeOfCrime.CrimeTypeName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Slett" class="btn btn-default" /> |
+            @Html.ActionLink("Tilbake til liste over lovbrudd", "Index")
+        </div>
+    }
+</div>

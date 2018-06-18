@@ -1,0 +1,94 @@
+﻿@model SuperSecret.Models.Suspect
+
+@{
+    ViewBag.Title = "Detaljer";
+}
+
+<h2>Detaljer</h2>
+
+<div>
+    <h4>Mistenkt</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        @if (Model.FilePaths.Any(p => p.Filetype == FileType.Photo))
+        {
+
+            <dt>
+                Foto
+            </dt>
+            <dd>
+                <img src="~/images/@Model.FilePaths.First(p => p.Filetype == FileType.Photo).FileName" alt="avatar" class="img-responsive" width="100% \9" />
+                
+            </dd>
+
+        }
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Alias)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Alias)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Age)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Age)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Country.CountryName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Country.CountryName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Crimes)
+        </dt>
+
+
+        <dd>
+            <table class="table">
+                <tr>
+                    <th>Beskrivelse</th>
+                    <th>Dato</th>
+                    <th>Type hendelse</th>
+                </tr>
+                @foreach (var item in Model.Crimes)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Date)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TypeOfCrime.CrimeTypeName)
+                        </td>
+                    </tr>
+                }
+            </table>
+
+        </dd>
+
+
+    </dl>
+</div>
+
+<p>
+    @Html.ActionLink("Endre", "Edit", new { id = Model.SuspectId }) |
+    @Html.ActionLink("Tilbake til liste over mistenkte", "Index")
+</p>

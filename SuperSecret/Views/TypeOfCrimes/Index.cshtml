@@ -1,0 +1,42 @@
+﻿@model IEnumerable<SuperSecret.Models.TypeOfCrime>
+
+@{
+    ViewBag.Title = "Type lovbrudd";
+}
+
+
+
+<p class="text-uppercase bold-text">
+    @Html.ActionLink("Opprett ny type lovbrudd", "Create")
+</p>
+
+<div class="panel panel-default">
+   
+    <div class="panel-heading"><h2>@ViewBag.Title</h2></div>
+   
+    <table class="table table-striped table-bordered ">
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.CrimeTypeName)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink("Endre", "Edit", new { id = item.TypeOfCrimeId })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CrimeTypeName)
+                </td>
+                <td>
+                    @Html.ActionLink("Slett", "Delete", new { id = item.TypeOfCrimeId })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

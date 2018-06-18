@@ -1,0 +1,138 @@
+﻿@model SuperSecret.Models.Suspect
+
+@{
+    ViewBag.Title = "Opprett mistenkt";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+@using (Html.BeginForm("Create", "Suspects", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-inline">
+       
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group col-md-offset-2">
+            <span class="control-label col-md-2"><strong>Navn</strong></span>
+            <br />
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Skriv inn navn" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group col-md-offset-1">
+            <span class="control-label col-md-2"><strong>Alias</strong></span>
+            <br />
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Alias, new { htmlAttributes = new { @class = "form-control", @placeholder = "Skriv inn alias" } })
+                @Html.ValidationMessageFor(model => model.Alias, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+       
+        <div class="clearfix"></div>
+        <br />
+
+        <div class="form-group col-md-offset-2">
+            <span class="control-label col-md-2"><strong>Alder</strong></span>
+            <br />
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Age, new { htmlAttributes = new { @class = "form-control", @placeholder = "Skriv inn alder" } })
+                @Html.ValidationMessageFor(model => model.Age, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-offset-1">
+            <span class="control-label col-md-2"><strong>Land</strong></span>
+            <br />
+            <div class="col-md-10">
+                @Html.DropDownList("CountryId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+       
+        <div class=" clearfix"></div>
+        <br />
+
+        <div class=" form-group panel panel-default col-md-offset-3">
+            <div class="panel-heading">Last opp bilde</div>
+                <div class=" panel-body">
+                    <span class="control-label col-md-2"><span class="bold-text">Bilde</span></span>
+                    <div class="col-md-10">
+                        <input type="file" id="Photo" name="upload" />
+                    </div>
+                </div>
+           
+        </div>
+
+    </div>
+    <br />
+    <div class="form-horizontal">
+       <div class=" form-group">
+            <div class="col-md-offset-2 col-md-8">
+                  <div class="panel panel-default">
+            <div class="panel-heading">Huk av for å legge til mistenkte personer.</div>
+                <table class="table table-striped table-bordered">
+                    <tr>
+                    <th>Type lovbrudd</th>
+                    <th>Beskrivelse</th>
+                    <th>Dato</th>
+                    <th></th>
+                    </tr>
+
+                        @{
+        
+                             List<SuperSecret.ViewModels.AssignCrimeData> crimes = ViewBag.Crimes;
+
+                                foreach (var crime in crimes)
+                                {
+            
+                               @:<tr>
+                                    @:<td>
+                       
+                                        @crime.TypeOfCrime.CrimeTypeName
+                                        @:</td>
+                                    @:<td>
+                                        @crime.Description
+                                        @:</td>
+                                    @:<td>
+                                         @crime.Date.ToShortDateString()
+                                         @:</td>
+                                    @:<td>
+                                        <input type="checkbox"
+                                                name="selectedCrime"
+                                                value="@crime.CrimeId"
+                                                @(Html.Raw(crime.Assigned ? "checked=\"checked\"" : "")) />
+                                    @:</td>
+                                @:</tr>
+                                }
+                            }
+                    </table>
+                </div>
+           </div>
+    </div>
+    <div class=" clearfix"></div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Opprett" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+}
+
+<div >
+    @Html.ActionLink("Tilbake til liste over mistenkte", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

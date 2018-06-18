@@ -1,0 +1,32 @@
+﻿@model SuperSecret.Models.Country
+
+@{
+    ViewBag.Title = "Slett land";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<h3>Er du sikker på at du vil slette dette landet?</h3>
+<div>
+   
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CountryName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CountryName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Slett" class="btn btn-default" /> |
+            @Html.ActionLink("Tilbake til liste over land", "Index")
+        </div>
+    }
+</div>

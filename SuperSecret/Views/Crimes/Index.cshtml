@@ -1,0 +1,79 @@
+﻿@model PagedList .IPagedList<SuperSecret.Models.Crime>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Lovbrudd";
+}
+
+<p  class="text-uppercase bold-text">@Html.ActionLink("Opprett nytt lovbrudd", "Create")</p>
+         
+<div class="panel panel-default">
+    
+    <div class="panel-heading"><h2>@ViewBag.Title</h2></div>
+    <div class="panel-body">
+        <p>Liste over lovbrudd. Trykk på velg for å endre ett lovbrudd, eller/og for å legge til mistenkte personer.</p>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>Velg</th>
+
+            <th>
+                Type lovbrudd
+            </th>
+            <th>
+                @Html.ActionLink("Beskrivelse", "Index", new { sortOrder = ViewBag.DescriptionSortParm })
+            </th>
+            <th>
+                @Html.ActionLink("Dato", "Index", new { sortOrder = ViewBag.DateSortParm })
+            </th>
+            <th>
+                Mistenkte navn
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.ActionLink("Velg", "Edit", new { id = item.CrimeId })
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.TypeOfCrime.CrimeTypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @{
+            foreach (var suspect in item.Suspects)
+            {
+                @suspect.Alias@:,
+                        }
+                    }
+                </td>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        @Html.ActionLink("Slett", "Delete", new { id = item.CrimeId })
+                    </td>
+                }
+
+
+            </tr>
+        }
+
+    </table>
+    <br />
+    Side @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) av @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort }))
+    </div>

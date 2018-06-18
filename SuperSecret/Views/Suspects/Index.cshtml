@@ -1,0 +1,97 @@
+﻿@model PagedList.IPagedList<SuperSecret.Models.Suspect>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Mistenkte";
+}
+
+
+
+<p class="text-uppercase bold-text">
+    @Html.ActionLink("Opprett ny mistenkt", "Create")
+</p>
+
+
+<div class="panel panel-default">
+
+    <div class="panel-heading"><h2>@ViewBag.Title</h2></div>
+    <div class="panel-body">
+        <p>
+            Liste over mistenkte. Trykk på velg, for å endre en mistenkt, og/eller legge til lovbrudd på en mistenkt.
+        </p>
+            @*@using (Html.BeginForm("Index", "Suspect", FormMethod.Get))
+            {
+            <p>
+                Søk på navn: @Html.TextBox("searchString", ViewBag.CurrentFilter as string)
+                <input type="submit" value="Søk" class="btn"/>
+            </p>
+            }*@
+
+        
+    </div>
+
+    <table class="table table-bordered table-condensed table-striped">
+        <tr>
+            <th>Velg</th>
+            <th>
+               Land
+            </th>
+
+            <th>
+                @Html.ActionLink("Navn", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Alias", "Index", new { sortOrder = ViewBag.AliasSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                Alder
+            </th>
+            <th>Lovbrudd</th>
+            <th></th>
+
+
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+
+                    @Html.ActionLink("Velg", "Edit", new { id = item.SuspectId })
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country.CountryName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Alias)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Age)
+                </td>
+                <td>
+                    @{
+            foreach (var crime in item.Crimes)
+            {
+                @crime.CrimeId  @:  @crime.Description <br />
+                }
+                    }
+                </td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>@Html.ActionLink("Slett", "Delete", new { id = item.SuspectId })</td>
+                }
+            </tr>
+        }
+
+    </table>
+    <br />
+    Side @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) av @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+</div>

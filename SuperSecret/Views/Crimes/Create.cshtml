@@ -1,0 +1,112 @@
+﻿@model SuperSecret.Models.Crime
+
+@{
+    ViewBag.Title = "Opprett lovbrudd";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+       
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <span class="control-label col-md-2"><strong>Beskrivelse</strong> </span>
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            <span class="control-label col-md-2"><strong>Type lovbrudd</strong> </span>
+            <div class="col-md-10">
+                @Html.DropDownList("TypeOfCrimeId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.TypeOfCrimeId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+       
+
+        <div class="form-group">
+            <span class="control-label col-md-2"><strong>Dato</strong></span>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", @placeholder = "yyyy-mm-dd" } })
+                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-6 col-md-offset-2">
+                  <div class="panel panel-default">
+            <div class="panel-heading">Huk av for å legge til mistenkte personer.</div>
+                <table class="table table-striped table-bordered" >
+                    <tr>
+                    <th>Navn</th>
+                    <th>Alias</th>
+                    <th>Alder</th>
+                    <th>Land</th>
+                    <th></th>
+                        </tr>
+                        @{
+                            
+                            List<SuperSecret.ViewModels.AssignSuspectData> suspects = ViewBag.Suspects;
+
+                            foreach (var suspect in suspects)
+                            {
+                               
+                              @:<tr>  
+                             @:<td>
+                                    
+                                     @suspect.Name
+                            @:</td>
+                             @:<td>
+                                    
+                                     @suspect.Alias
+                            @:</td>
+                             @:<td>
+                                    
+                                    @suspect.Age
+                            @:</td>
+                             @:<td>
+                                    
+                                     @suspect.Country.CountryName
+                            @:</td>
+                             @:<td>
+                                    <input type="checkbox"
+                                           name="selectedSuspect"
+                                           value="@suspect.SuspectId"
+                                           @(Html.Raw(suspect.Assigned ? "checked=\"checked\"" : "")) />
+                                    
+                            @:</td>
+                        }
+                        @:</tr>
+                    }
+               </table>
+
+            </div>
+        </div>
+</div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Opprett" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Tilbake til liste for lovbrudd", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}

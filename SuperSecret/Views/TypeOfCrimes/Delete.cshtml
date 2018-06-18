@@ -1,0 +1,32 @@
+﻿@model SuperSecret.Models.TypeOfCrime
+
+@{
+    ViewBag.Title = "Slett type kriminalitet";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<h3>Er du sikker på at du vil slette denne typen kriminalitet?</h3>
+<div>
+    
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CrimeTypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CrimeTypeName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Slett" class="btn btn-default" /> |
+            @Html.ActionLink("Tilbake til liste over type kriminalitet", "Index")
+        </div>
+    }
+</div>

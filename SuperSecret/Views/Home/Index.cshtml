@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "Super Secret";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>Velkommen til Super Secret. </p>
+@if (!User.Identity.IsAuthenticated)
+{
+    <p>Du må logge inn for å bruke siden.</p>
+    @Html.ActionLink("Logg inn", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+}
+
+
